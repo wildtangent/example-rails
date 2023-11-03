@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/robot_cli'
+
+#  Run the script
+@robot_cli = RobotCli.new
+@robot_cli.execute

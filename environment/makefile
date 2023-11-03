@@ -38,12 +38,13 @@ shell: ## Internal image bash command line.
 	else \
 		docker-compose -f docker-compose.$(BUILD_TARGET).yml exec $(SHELL_CONTAINER_NAME) /bin/ash; \
 	fi
-	
+
 start: ## Start previously builded application images.
 	@make create_project_artifacts
 	@make start_postgres
 	@make start_ruby
 	@make start_nginx
+	@make start_redis
 
 run: ## Run ruby debugger session.
 	@docker-compose -f docker-compose.$(BUILD_TARGET).yml exec ruby /bin/ash /rdebug_ide/runner.sh
@@ -67,6 +68,13 @@ start_nginx: ## Start nginx image.
 		docker-compose -f docker-compose.$(BUILD_TARGET).yml up -d nginx; \
 	else \
 		echo "Nginx is running."; \
+	fi
+
+start_redis: ## Start redis image.
+	@if [[ -z `docker ps | grep redis` ]]; then \
+		docker-compose -f docker-compose.$(BUILD_TARGET).yml up -d redis; \
+	else \
+		echo "Redis is running."; \
 	fi
 
 stop: ## Stop all images.

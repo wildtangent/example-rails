@@ -3,7 +3,7 @@ services:
   nginx:
     image: "${PROJECT_NAME}/nginx:development"
     container_name: ${PROJECT_NAME}-nginx
-    build: 
+    build:
       context: ./
       dockerfile: ./containers/nginx/Dockerfile
     depends_on:
@@ -48,6 +48,15 @@ services:
       - ${DB_PORT}:5432
     volumes:
       - shopify_rails_db_volume:/var/lib/postgresql/data
-
+  redis:
+    image: redis/redis-stack:latest
+    container_name: ${PROJECT_NAME}-redis
+    # environment:
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - shopify_rails_redis_volume:/data
 volumes:
   shopify_rails_db_volume:
+  shopify_rails_redis_volume:
